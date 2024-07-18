@@ -15,7 +15,7 @@ export class BookId {
   // バリデーションチェックでは構文チェックの前に文字数のチェックを先にした方が良い
   private validate(isbn: string): void {
     if (isbn.length < BookId.MIN_LENGTH || isbn.length > BookId.MAX_LENGTH) {
-      throw new Error('ISBNの文字列が不正です');
+      throw new Error('ISBNの文字数が不正です');
     }
 
     if (!this.isValidIsbn10(isbn) && !this.isValidIsbn13(isbn)) {
