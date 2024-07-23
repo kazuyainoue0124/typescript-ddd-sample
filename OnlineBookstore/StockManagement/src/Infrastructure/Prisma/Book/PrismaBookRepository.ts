@@ -8,6 +8,7 @@ import { Status, StatusEnum } from "Domain/models/Book/Stock/Status/Status";
 import { Stock } from "Domain/models/Book/Stock/Stock";
 import { StockId } from "Domain/models/Book/Stock/StockId/StockId";
 import { Title } from "Domain/models/Book/Title/Title";
+import { PrismaClientManager } from "Infrastructure/Prisma/PrismaClientManager";
 
 const prisma = new PrismaClient();
 
@@ -37,8 +38,14 @@ export class PrismaBookRepository implements IBookRepository {
     }
   }
 
+  // ClientManagerをDIする
+  constructor(private clientManager: PrismaClientManager) { }
+
   async save(book: Book) {
-    await prisma.book.create({
+    // prismaクライアントをclientManagerから取得するように変更
+    const client = this.clientManager.getClient();
+
+    await client.book.create({
       data: {
         bookId: book.bookId.value,
         title: book.title.value,
