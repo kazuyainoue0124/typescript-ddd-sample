@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe';
 import { $Enums, PrismaClient } from "@prisma/client";
 import { Book } from "Domain/models/Book/Book";
 import { BookId } from "Domain/models/Book/BookId/BookId";
@@ -12,7 +13,14 @@ import { PrismaClientManager } from "Infrastructure/Prisma/PrismaClientManager";
 
 const prisma = new PrismaClient();
 
+@injectable()
 export class PrismaBookRepository implements IBookRepository {
+  // ClientManagerをDIする
+  constructor(
+    @inject('IDataAccessClientManager')
+    private clientManager: PrismaClientManager
+  ) { }
+
   // DBのstatusの型とドメイン層のStatusの型が異なるため、変換が必要
   private statusDataMapper(
     status: StatusEnum
@@ -37,9 +45,6 @@ export class PrismaBookRepository implements IBookRepository {
         return new Status(StatusEnum.OutOfStock);
     }
   }
-
-  // ClientManagerをDIする
-  constructor(private clientManager: PrismaClientManager) { }
 
   async save(book: Book) {
     // prismaクライアントをclientManagerから取得するように変更
