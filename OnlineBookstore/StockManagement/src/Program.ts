@@ -1,6 +1,8 @@
 import { PrismaBookRepository } from "Infrastructure/Prisma/Book/PrismaBookRepository";
 import { PrismaClientManager } from "Infrastructure/Prisma/PrismaClientManager";
 import { PrismaTransactionManager } from "Infrastructure/Prisma/PrismaTransactionManager";
+import { EventEmitterDomainEventPublisher } from 'Infrastructure/DomainEvent/EventEmitter/EventEmitterDomainEventPublisher';
+import { EventEmitterDomainEventSubscriber } from 'Infrastructure/DomainEvent/EventEmitter/EventEmitterDomainEventSubscriber';
 import { container, Lifecycle } from "tsyringe";
 
 // repository
@@ -19,3 +21,12 @@ container.register('IDataAccessClientManager',
   // The same instance will be resolved for each resolution of this dependency during a single resolution chain
   { lifecycle: Lifecycle.ResolutionScoped }
 );
+
+// DomainEvent
+container.register('IDomainEventPublisher', {
+  useClass: EventEmitterDomainEventPublisher,
+});
+
+container.register('IDomainEventSubscriber', {
+  useClass: EventEmitterDomainEventSubscriber,
+});
