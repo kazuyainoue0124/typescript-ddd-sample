@@ -1,7 +1,8 @@
 import { injectable, inject } from 'tsyringe';
-import { BookId } from "Domain/models/Book/BookId/BookId";
-import { IBookRepository } from "Domain/models/Book/IBookRepository";
-import { BookDTO } from "Application/Book/BookDTO";
+
+import { BookId } from 'Domain/models/Book/BookId/BookId';
+import { IBookRepository } from 'Domain/models/Book/IBookRepository';
+import { BookDTO } from '../BookDTO';
 
 @injectable()
 export class GetBookApplicationService {
